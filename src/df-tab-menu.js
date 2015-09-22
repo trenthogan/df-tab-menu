@@ -17,7 +17,7 @@
 
 				var addBootstrapTheme = $attrs.theme === 'bootstrap';
 				// If you would like to add the bootstrap dropdown menu but not the rest of the bootstrap classes use ...
-				var addBootstrapDropDownMenu = $attrs.addBootstrapDropDownMenu === 'bootstrap';
+				var addBootstrapDropDownMenu = $attrs.themeDropDownMenu === 'bootstrap';
 
 
 				function bootstrap(s) {

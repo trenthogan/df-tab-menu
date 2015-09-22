@@ -38,4 +38,4 @@ Example
 * each **data-menu-item** refers to a possible state provided by **menu-control**. If a state is invalid, an exception is throw, and the directive will fail to render correctly
 * **data-more-menu-item** is used to generate the dropdown entry when that contains the menu items overflow.
 * bootstrap tab classes can be added via the attribute **theme="bootstrap"** on the root element
-* If you would like to add bootstrap classes to only the dropdown menu you can use **add-bootstrap-drop-down-menu="bootstrap"**
+* If you would like to add bootstrap classes to only the dropdown menu you can use **theme-drop-down-menu="bootstrap"**

@@ -5,6 +5,7 @@
 	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', ['$window','$timeout', function($window, $timeout) {
 		return {
 			restrict : 'A',
+      priority: 2001,
 			compile: function($element, $attrs) {
 				var doc = $window.document;
 				var root = $element[0];
@@ -213,17 +214,27 @@
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 
+					var runBuildTimeout = function() {
+						var buildMenuTimeout;
+							$timeout.cancel(buildMenuTimeout);
+							buildMenuTimeout = $timeout(function() {
+								buildMenu();
+								updateActiveState($attrs.menuControl);
+							}, 25, false);
+					}
 
-					var buildMenuTimeout;
 					$scope.$watch(function() {
-						$timeout.cancel(buildMenuTimeout);
-						buildMenuTimeout = $timeout(function() {
-							buildMenu();
-							updateActiveState($attrs.menuControl);
-						}, 25, false);
+						runBuildTimeout();
 					});
+
+					$timeout(function() {
+						buildMenu();
+						updateActiveState($attrs.menuControl);
+						return $scope.showMenu = true;
+					}, 25, false);
+
 				};
-		     }
+		  }
 		}
 
 	}]);

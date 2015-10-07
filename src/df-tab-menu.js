@@ -8,8 +8,6 @@
       priority: 2001,
 			compile: function($element, $attrs, $rootScope) {
 
-        console.log('Compile Run');
-
 				var doc = $window.document;
 				var root = $element[0];
 
@@ -131,7 +129,6 @@
 					}
 
 					var buildMenu = function() {
-            console.log('Build Menu');
 						var maxWidth = root.offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);

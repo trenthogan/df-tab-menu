@@ -2,11 +2,14 @@
 
 	'use strict';
 
-	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', ['$window','$timeout', function($window, $timeout) {
+	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', ['$window','$timeout', 'haparaClientBus', function($window, $timeout, haparaClientBus) {
 		return {
 			restrict : 'A',
       priority: 2001,
-			compile: function($element, $attrs) {
+			compile: function($element, $attrs, $rootScope) {
+
+        console.log('Compile Run');
+
 				var doc = $window.document;
 				var root = $element[0];
 
@@ -128,6 +131,7 @@
 					}
 
 					var buildMenu = function() {
+            console.log('Build Menu');
 						var maxWidth = root.offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
@@ -207,7 +211,7 @@
 					$attrs.$observe('menuControl', function(c) {
 						buildMenu();
 						updateActiveState(c);
-		            });
+		      });
 
 					wdw.bind('resize', buildMenu);
 
@@ -217,21 +221,20 @@
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 
-					var buildMenuTimeout;
-
 					var runBuildTimeout = function() {
-							$timeout.cancel(buildMenuTimeout);
-							buildMenuTimeout = $timeout(function() {
+							$timeout(function() {
 								buildMenu();
 								updateActiveState($attrs.menuControl);
 								var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
-								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','true');
-							}, 100, false);
+								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','false');
+							}, 0, false);
 					}
 
-					$scope.$watch(function() {
-						runBuildTimeout();
-					});
+          haparaClientBus.register({ key: "hapara-shared-group-view-change" }, function (view) {
+            var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
+            angular.element(moreMenuToggle).addClass('invisible').attr('aria-hidden','true');
+            runBuildTimeout();
+          });
 
 				};
 		  }

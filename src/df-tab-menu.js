@@ -134,9 +134,11 @@
 
 						var elements = root.querySelectorAll('li[data-menu-item][role=presentation]');
 						var moreElements = root.querySelectorAll('li[role=menuitem]');
+
 						var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
 
 						if(visibleItems.length < root.querySelectorAll('li[data-menu-item][role=presentation]').length) {
+
 							angular.element(moreMenuToggle).removeClass('ng-hide').attr('aria-hidden','false');
 
 							for(var i = 0; i < elements.length; i++) {
@@ -199,6 +201,7 @@
 							e1.removeClass('active');
 							e2.addClass('active');
 						}
+
 					}
 
 					$attrs.$observe('menuControl', function(c) {
@@ -214,24 +217,21 @@
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 
+					var buildMenuTimeout;
+
 					var runBuildTimeout = function() {
-						var buildMenuTimeout;
 							$timeout.cancel(buildMenuTimeout);
 							buildMenuTimeout = $timeout(function() {
 								buildMenu();
 								updateActiveState($attrs.menuControl);
-							}, 25, false);
+								var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
+								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','true');
+							}, 100, false);
 					}
 
 					$scope.$watch(function() {
 						runBuildTimeout();
 					});
-
-					$timeout(function() {
-						buildMenu();
-						updateActiveState($attrs.menuControl);
-						return $scope.showMenu = true;
-					}, 25, false);
 
 				};
 		  }

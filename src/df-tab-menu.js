@@ -129,6 +129,7 @@
 					}
 
 					var buildMenu = function() {
+            console.log( 'Build Menu ' + Date() );
 						var maxWidth = root.offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
@@ -218,20 +219,36 @@
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 
-					var runBuildTimeout = function() {
+          var buildMenuTimeout;
+          var runBuildTimeoutDebounce = function() {
+							$timeout.cancel(buildMenuTimeout);
+							buildMenuTimeout = $timeout(function() {
+								buildMenu();
+								updateActiveState($attrs.menuControl);
+                var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
+								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','false');
+							}, 500, false);
+					}
+
+          var runBuildTimeout = function() {
 							$timeout(function() {
 								buildMenu();
 								updateActiveState($attrs.menuControl);
-								var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
+                var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
 								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','false');
 							}, 0, false);
 					}
 
           haparaClientBus.register({ key: "hapara-shared-group-view-change" }, function (view) {
+            console.log( 'Client Bus ' + Date() );
             var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
             angular.element(moreMenuToggle).addClass('invisible').attr('aria-hidden','true');
             runBuildTimeout();
           });
+
+          $scope.$watch(function() {
+						runBuildTimeoutDebounce();
+					});
 
 				};
 		  }

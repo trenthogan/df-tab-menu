@@ -159,6 +159,7 @@
 							dropdownOpen = false;
 							drawDropDown();
 						}
+						angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','false');
 					};
 
 					var closeDropdown = function(e) {
@@ -180,6 +181,7 @@
 							angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'false'});;
 							angular.element(doc).unbind('click', closeDropdown);
 						}
+
 					};
 
 					//dropdown controls
@@ -218,14 +220,12 @@
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 
-          var buildMenuTimeout;
+          var buildMenuTimeout = null;
           var runBuildTimeoutDebounce = function() {
 							$timeout.cancel(buildMenuTimeout);
 							buildMenuTimeout = $timeout(function() {
 								buildMenu();
 								updateActiveState($attrs.menuControl);
-                var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
-								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','false');
 							}, 200, false);
 					}
 
@@ -235,17 +235,20 @@
 							$timeout(function() {
 								buildMenu();
 								updateActiveState($attrs.menuControl);
-                var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
-								angular.element(moreMenuToggle).removeClass('invisible').attr('aria-hidden','false');
 							}, 0, false);
 					}
 
+
+					var clearScopeWatcher = null;
           var temporaryScopeWatch = function(){
+						// Add scope watch
             var scopeWatcher = $scope.$watch(function() {
   						runBuildTimeoutDebounce();
   					});
+						// Debounce
+						$timeout.cancel(clearScopeWatcher);
             // Clear Scope Watch After 5 Seconds
-            $timeout(function() {
+            clearScopeWatcher = $timeout(function() {
               scopeWatcher();
             }, 5000, false);
 
@@ -255,11 +258,9 @@
             var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
             angular.element(moreMenuToggle).addClass('invisible').attr('aria-hidden','true');
             runBuildTimeout();
-            // Add temporary Scope Watcher
+						// Add temporary Scope Watcher
             temporaryScopeWatch();
           });
-
-
 				};
 		  }
 		}

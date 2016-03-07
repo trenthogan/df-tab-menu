@@ -122,7 +122,7 @@
           var getActiveItemIndex = function () {
             var items = root.querySelectorAll('li[data-menu-item][role=presentation]');
             for (var i = 0; i < items.length; i++) {
-              if (angular.element(items[i]).hasClass('df-tab-menu-active')) {
+              if (angular.element(items[i]).hasClass('active')) {
                 return i;
               }
             }

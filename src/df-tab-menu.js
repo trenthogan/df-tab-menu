@@ -34,15 +34,15 @@
 
         var moreMenuElement = angular.element(root.querySelector('li[data-more-menu-item]'));
         moreMenuElement.attr({
-            "role":"presentation"
+          "role":"presentation"
         });
         moreMenuElement.addClass(bootstrap('dropdown'));
         moreMenuElement.addClass(bootstrapDropDownMenu('dropdown'));
 
         moreMenuElement.children().attr({
-            "dropdown-toggle":"",
-            "aria-haspopup":"true",
-            "aria-expanded":"false"
+          "dropdown-toggle":"",
+          "aria-haspopup":"true",
+          "aria-expanded":"false"
         });
         moreMenuElement.children().addClass('dropdown-toggle');
 
@@ -222,20 +222,20 @@
 
           var buildMenuTimeout = null;
           var runBuildTimeoutDebounce = function() {
-              $timeout.cancel(buildMenuTimeout);
-              buildMenuTimeout = $timeout(function() {
-                buildMenu();
-                updateActiveState($attrs.menuControl);
-              }, 200, false);
+            $timeout.cancel(buildMenuTimeout);
+            buildMenuTimeout = $timeout(function() {
+              buildMenu();
+              updateActiveState($attrs.menuControl);
+            }, 200, false);
           }
 
 
 
           var runBuildTimeout = function() {
-              $timeout(function() {
-                buildMenu();
-                updateActiveState($attrs.menuControl);
-              }, 0, false);
+            $timeout(function() {
+              buildMenu();
+              updateActiveState($attrs.menuControl);
+            }, 0, false);
           }
 
 

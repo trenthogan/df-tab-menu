@@ -255,7 +255,8 @@
           };
 
           haparaClientBus.register({
-            key: 'hapara-shared-group-view-change'
+            key: 'hapara-shared-group-view-change',
+            scope: $scope
           }, function (view) {
             var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
             angular.element(moreMenuToggle).addClass('invisible').attr('aria-hidden', 'true');

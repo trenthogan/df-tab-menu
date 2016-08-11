@@ -95,8 +95,9 @@
           }, true);
 
           var getMoreElementSize = function () {
-            angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('ng-hide');
-            return root.querySelector('li[data-more-menu-item]').offsetWidth;
+            var ele = root.querySelector('li[data-more-menu-item]')
+            angular.element(ele).removeClass('ng-hide');
+            return ele ? ele.offsetWidth : 0;
           };
 
           var getVisibleItems = function (_maxWidth, _activeItemIndex) {
